@@ -11,7 +11,7 @@ public
 
   # define methods for each register 'name' to convert them into symbols.
   [general_registers, index_and_pointer_registers].flatten.each do | symbol |
-    eval "def #{symbol.to_s}() :#{symbol} end"
+    eval "def #{symbol}() :#{symbol} end"
   end
 
   def mov(src, dst)
