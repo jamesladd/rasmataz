@@ -2,7 +2,7 @@ require 'rasmataz'
 
    mov eax, edx
    label :spin
-   push ecx
+   push eax
    pop ecx
    dec ecx
    jnz :spin

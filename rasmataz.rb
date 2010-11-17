@@ -1,18 +1,19 @@
 
 public 
 
-  def ecx()
-    :ecx
+  def general_registers
+    [ :eax, :ebx, :ecx, :edx ]
   end
 
-  def eax()
-    :eax
+  def index_and_pointer_registers
+    [ :esi, :edi, :ebp, :eip, :esp ]
   end
 
-  def edx()
-    :edx
+  # define methods for each register 'name' to convert them into symbols.
+  [general_registers, index_and_pointer_registers].flatten.each do | symbol |
+    eval "def #{symbol.to_s}() :#{symbol} end"
   end
- 
+
   def mov(src, dst)
     puts "mov #{src}, #{dst}"
   end
