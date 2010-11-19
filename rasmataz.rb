@@ -1,19 +1,6 @@
 
 public 
 
-  def general_registers
-    [ :eax, :ebx, :ecx, :edx ]
-  end
-
-  def index_and_pointer_registers
-    [ :esi, :edi, :ebp, :eip, :esp ]
-  end
-
-  # define methods for each register 'name' to convert them into symbols.
-  [general_registers, index_and_pointer_registers].flatten.each do | symbol |
-    eval "def #{symbol}() :#{symbol} end"
-  end
-
   def mov(src, dst)
     puts "mov #{src}, #{dst}"
   end
@@ -37,4 +24,27 @@ public
   def label(name)
     puts "label #{name}"
   end
+
+  def make_method(source)
+    eval source
+  end
+
+private 
+
+  def general_registers
+    [ :eax, :ebx, :ecx, :edx ]
+  end
+
+  def index_and_pointer_registers
+    [ :esi, :edi, :ebp, :eip, :esp ]
+  end
+
+  def rasmataz
+    # define methods for each register 'name' to convert them into symbols.
+    [general_registers, index_and_pointer_registers].flatten.each do | symbol |
+      make_method "def #{symbol}() :#{symbol} end"
+    end
+  end
+
+rasmataz
 
