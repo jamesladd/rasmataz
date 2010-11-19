@@ -25,11 +25,11 @@ public
     puts "label #{name}"
   end
 
+private 
+
   def make_method(source)
     eval source
   end
-
-private 
 
   def general_registers
     [ :eax, :ebx, :ecx, :edx ]
@@ -39,11 +39,15 @@ private
     [ :esi, :edi, :ebp, :eip, :esp ]
   end
 
-  def rasmataz
+  def define_register_mapping_methods
     # define methods for each register 'name' to convert them into symbols.
     [general_registers, index_and_pointer_registers].flatten.each do | symbol |
       make_method "def #{symbol}() :#{symbol} end"
     end
+  end
+
+  def rasmataz
+    define_register_mapping_methods
   end
 
 rasmataz
