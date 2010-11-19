@@ -39,7 +39,7 @@ private
     [ :esi, :edi, :ebp, :eip, :esp ]
   end
 
-  def define_register_mapping_methods
+  def make_register_identifiers
     # define methods for each register 'name' to convert them into symbols.
     [general_registers, index_and_pointer_registers].flatten.each do | symbol |
       make_method "def #{symbol}() :#{symbol} end"
@@ -47,7 +47,7 @@ private
   end
 
   def rasmataz
-    define_register_mapping_methods
+    make_register_identifiers
   end
 
 rasmataz
