@@ -10,3 +10,6 @@ for a virtual machine I plan to make.
 
 Right now, this just shows the neat features of Ruby for making DSL's.
 
+Want to play? Run Ruby IRB and the command irb_load 'rasmataz.rb', and now you
+have an interactive assembler shell. 
+
