@@ -1,46 +1,34 @@
 require 'rasmataz/machine.rb'
 
-public 
-
-  def mov(src, dst)
-    puts "mov #{src}, #{dst}"
-  end
-
-  def push(src)
-    puts "push #{src}"
-  end
-
-  def pop(dst)
-    puts "pop #{dst}"
-  end
-
-  def dec(src)
-    puts "dec #{src}"
-  end
-
-  def jnz(lbl)
-    puts "jnz #{lbl}"
-  end
-
-  def label(name)
-    puts "label #{name}"
-  end
-
 private 
 
-  def make_method(source)
-    eval source
+  def add_method(source)
+    eval "def #{source} end"
   end
 
   def all_register_names
     @machine.all_register_names
   end
 	   
-  def make_register_identifiers
+  def add_register_identifier_methods
     # define methods for each register 'name' to convert them into symbols.
     all_register_names.each do | symbol |
-      make_method "def #{symbol}() :#{symbol} end"
+      add_method "#{symbol}() :#{symbol}"
     end
+  end
+
+  def add_instruction_method(instruction)
+    add_method "#{instruction[0]}() @machine.#{instruction[0]}()" if instruction.size == 1
+    add_method "#{instruction[0]}(a1) @machine.#{instruction[0]}(a1)" if instruction.size == 2
+    add_method "#{instruction[0]}(a1,a2) @machine.#{instruction[0]}(a1,a2)" if instruction.size == 3
+  end
+
+  def instructions
+    @machine.instructions
+  end
+
+  def add_instruction_methods
+    instructions.each_line { | line | add_instruction_method(line.split(' ')) }
   end
 
   def make_machine
@@ -49,6 +37,7 @@ private
 
   def rasmataz
     make_machine
-    make_register_identifiers
+    add_register_identifier_methods
+    add_instruction_methods
   end
 
