@@ -32,17 +32,13 @@ private
     eval source
   end
 
-  def general_registers
-    [ :eax, :ebx, :ecx, :edx ]
+  def all_register_names
+    @machine.all_register_names
   end
-
-  def index_and_pointer_registers
-    [ :esi, :edi, :ebp, :eip, :esp ]
-  end
-
+	   
   def make_register_identifiers
     # define methods for each register 'name' to convert them into symbols.
-    [general_registers, index_and_pointer_registers].flatten.each do | symbol |
+    all_register_names.each do | symbol |
       make_method "def #{symbol}() :#{symbol} end"
     end
   end
@@ -52,7 +48,7 @@ private
   end
 
   def rasmataz
-    make_register_identifiers
     make_machine
+    make_register_identifiers
   end
 
