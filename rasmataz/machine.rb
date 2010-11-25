@@ -1,6 +1,9 @@
 
 module RASMATAZ
+
   class Machine
+
+    attr_accessor :registers, :stack, :memory
 
     public
  
@@ -20,7 +23,7 @@ module RASMATAZ
       end
 
       def mov(src, dst)
-        puts "mov #{src}, #{dst}"
+        puts "mov #{src}, #{dst.inspect}"
       end
 
       def push(src)
@@ -44,6 +47,12 @@ module RASMATAZ
       end
 
     private 
+
+      def initialize
+        @registers = []
+        @stack = []
+        @memory = []
+      end
 
       def general_register_names
         [ :eax, :ebx, :ecx, :edx ]

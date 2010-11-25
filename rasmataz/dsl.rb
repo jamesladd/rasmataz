@@ -23,8 +23,10 @@ private
     add_method "#{instruction[0]}(a1,a2) @machine.#{instruction[0]}(a1,a2)" if instruction.size == 3
   end
 
-  def instructions
-    @machine.instructions
+  def add_machine_delegate_methods
+    ['registers', 'stack', 'memory', 'instructions'].each do | symbol |
+      add_method "#{symbol}() @machine.#{symbol}"
+    end
   end
 
   def add_instruction_methods
@@ -37,6 +39,7 @@ private
 
   def rasmataz
     make_machine
+    add_machine_delegate_methods
     add_register_identifier_methods
     add_instruction_methods
   end

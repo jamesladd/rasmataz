@@ -1,6 +1,6 @@
 require 'rasmataz'
 
-   mov eax, edx
+   mov eax, [edx]
    label :spin
    push eax
    pop ecx
