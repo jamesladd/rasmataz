@@ -49,9 +49,16 @@ module RASMATAZ
     private 
 
       def initialize
-        @registers = []
         @stack = []
         @memory = []
+        @registers = hash_of_all_register_names
+      end
+
+      def hash_of_all_register_names
+        all_register_names.inject({}) do | result, element |
+          result[element] = 0
+          result
+        end
       end
 
       def general_register_names
