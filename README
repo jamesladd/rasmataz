@@ -1,14 +1,16 @@
 RASMATAZ - An Assembler Front End (Driver) / Architecture Neutral Assembler
 
-This is an experiement in using Ruby's DSL abilities to make an assembler the goal of which
+This is an experiement in using Ruby's DSL abilities to make an assembler, the goal of which
 is to see how little code is needed given what Ruby does 'out-of-the-box'.
+
+I intend to make use of this project at some point to create an assembler for a virtual machine
+and language I plan to make. It does a few things right now, but mostly it shows the neat features
+of Ruby for makeing DSL's.
+
 
 This is not a copy of Wilson, it is more like a MASM. 
 http://blog.zenspider.com/2009/06/wilson-version-111-has-been-re.html
 
-I intend to make use of this project at some point to create an assembler for a virtual machine I plan to make.
-
-Right now, this just shows the neat features of Ruby for making DSL's.
 
 To play with rasmataz:
 
