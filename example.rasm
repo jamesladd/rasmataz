@@ -1,8 +1,8 @@
 require 'rasmataz'
 
-   mov eax, [edx]
+   mov rax, [rdx]
    label :spin
-   push eax
-   pop ecx
-   dec ecx
+   push rax
+   pop rcx
+   dec rcx
    jnz :spin

@@ -3,7 +3,7 @@ module RASMATAZ
 
   class Machine
 
-    attr_accessor :registers, :stack, :memory
+    attr_accessor :registers, :stack, :memory, :labels
 
     public
  
@@ -23,27 +23,27 @@ module RASMATAZ
       end
 
       def mov(src, dst)
-        puts "mov #{src}, #{dst.inspect}"
+        encode instruction.with(:mnemonic => :mov, :arg1 => src, :arg2 => dst)
       end
 
       def push(src)
-        puts "push #{src}"
+		encode instruction.with(:mnemonic => :dec, :arg1 => src)
       end
 
       def pop(dst)
-        puts "pop #{dst}"
+		encode instruction.with(:mnemonic => :pop, :arg1 => dst)
       end
 
       def dec(src)
-        puts "dec #{src}"
+		encode instruction.with(:mnemonic => :dec, :arg1 => src)
       end
 
-      def jnz(lbl)
-        puts "jnz #{lbl}"
+      def jnz(label)
+        encode instruction.with(:mnemonic => :jnz, :arg1 => label)
       end
 
       def label(name)
-        puts "label #{name}"
+        encode_label instruction.with(:mnemonic => :label, :arg1 => name)
       end
 
     private 
@@ -51,7 +51,21 @@ module RASMATAZ
       def initialize
         @stack = []
         @memory = []
+        @labels = {}
         @registers = hash_of_all_register_names
+      end
+
+      def encode(instruction)
+        # empty - here to help readability of adding instructions for execution.
+      end
+
+      def encode_label(instruction)
+        @labels[instruction.mnemonic] = instruction.pointer
+      end
+
+      def instruction
+        @memory << Instruction.new(@memory.size)
+        @memory.last
       end
 
       def hash_of_all_register_names
@@ -62,12 +76,28 @@ module RASMATAZ
       end
 
       def general_register_names
-        [ :eax, :ebx, :ecx, :edx ]
+        [ :rax, :rbx, :rcx, :rdx ]
       end
 
       def index_and_pointer_register_names
-        [ :esi, :edi, :ebp, :eip, :esp ]
+        [ :rsi, :rdi, :rbp, :rip, :rsp ]
       end
   end
+
+  class Instruction
+
+    attr_accessor :mnemonic, :pointer, :arg1, :arg2
+
+    def initialize(pointer)
+      @pointer = pointer
+    end
+
+    def with(attributes)
+      attributes.keys.each { |key| send("#{key}=", attributes[key]) }
+      self
+    end
+
+  end
+
 end
 
