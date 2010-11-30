@@ -27,15 +27,15 @@ module RASMATAZ
       end
 
       def push(src)
-		encode instruction.with(:mnemonic => :dec, :arg1 => src)
+        encode instruction.with(:mnemonic => :dec, :arg1 => src)
       end
 
       def pop(dst)
-		encode instruction.with(:mnemonic => :pop, :arg1 => dst)
+        encode instruction.with(:mnemonic => :pop, :arg1 => dst)
       end
 
       def dec(src)
-		encode instruction.with(:mnemonic => :dec, :arg1 => src)
+        encode instruction.with(:mnemonic => :dec, :arg1 => src)
       end
 
       def jnz(label)
@@ -44,6 +44,10 @@ module RASMATAZ
 
       def label(name)
         encode_label instruction.with(:mnemonic => :label, :arg1 => name)
+      end
+ 
+      def go
+        raise "No :start label found. Define one with 'label :start'." if labels[:start].nil?
       end
 
     private 

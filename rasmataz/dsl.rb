@@ -24,7 +24,7 @@ private
   end
 
   def add_machine_delegate_methods
-    ['registers', 'stack', 'memory', 'instructions', 'labels'].each do | name |
+    ['registers', 'stack', 'memory', 'instructions', 'labels', 'go'].each do | name |
       add_method "#{name}() @machine.#{name}"
     end
   end
