@@ -1,9 +1,8 @@
 require 'rasmataz'
 
-   label :start
+   label :start      # program starts execution here.
    nop
 
-   # include another file/library as part of program.
-   load 'part.rasm'
+   load 'part.rasm'  # include another file/library
    nop
 
