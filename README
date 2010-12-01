@@ -39,5 +39,6 @@ run program
 
   > go  
 
-(Note: go is not implemented yet.)
+You can also just run the entire program from the command line with "ruby example.rasm"
+but I like the interactive mode.
 

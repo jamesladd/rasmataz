@@ -1,0 +1,10 @@
+require 'rasmataz'
+
+   label :start
+   nop
+   mov rax, [rdx]
+   label :spin
+   push rax
+   pop rcx
+   dec rcx
+   jnz :spin

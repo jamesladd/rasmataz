@@ -2,9 +2,8 @@ require 'rasmataz'
 
    label :start
    nop
-   mov rax, [rdx]
-   label :spin
-   push rax
-   pop rcx
-   dec rcx
-   jnz :spin
+
+   # include another file/library as part of program.
+   load 'part.rasm'
+   nop
+
