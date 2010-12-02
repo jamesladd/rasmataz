@@ -2,7 +2,6 @@ require 'rasmataz'
 
    label :start      # program starts execution here.
    nop
-   halt
 
    load 'part.rasm'  # include another file/library
    nop
