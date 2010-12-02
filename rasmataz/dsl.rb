@@ -18,13 +18,13 @@ private
   end
 
   def add_instruction_method(instruction)
-    add_method "#{instruction[0]}() @machine.#{instruction[0]}()" if instruction.size == 1
-    add_method "#{instruction[0]}(a1) @machine.#{instruction[0]}(a1)" if instruction.size == 2
-    add_method "#{instruction[0]}(a1,a2) @machine.#{instruction[0]}(a1,a2)" if instruction.size == 3
+    add_method "#{instruction[0]}() @machine.encode_#{instruction[0]}()" if instruction.size == 1
+    add_method "#{instruction[0]}(a1) @machine.encode_#{instruction[0]}(a1)" if instruction.size == 2
+    add_method "#{instruction[0]}(a1,a2) @machine.encode_#{instruction[0]}(a1,a2)" if instruction.size == 3
   end
 
   def add_machine_delegate_methods
-    ['registers', 'stack', 'memory', 'instructions', 'labels', 'go'].each do | name |
+    ['registers', 'stack', 'memory', 'instructions', 'labels', 'go', 'step'].each do | name |
       add_method "#{name}() @machine.#{name}"
     end
   end

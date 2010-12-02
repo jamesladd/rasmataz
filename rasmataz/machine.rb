@@ -19,50 +19,65 @@ module RASMATAZ
         push src
         pop dst
         dec src
+		inc src
         jnz lbl
         label name
         INSTRUCTIONS
       end
 
-      def halt()
+      # instruction pairs - one to encode into memory and one to execute against machine.
+
+      def encode_halt()
         encode instruction.with(:mnemonic => :halt)
       end
 
-      def nop()
+      def execute_halt(instruction)
+        @halted = true
+      end
+
+      def encode_nop()
         encode instruction.with(:mnemonic => :nop)
       end
 
-      def mov(src, dst)
+      def execute_nop(instruction)
+        # do no operation.
+      end
+
+      def encode_mov(src, dst)
         encode instruction.with(:mnemonic => :mov, :arg1 => src, :arg2 => dst)
       end
 
-      def push(src)
+      def encode_push(src)
         encode instruction.with(:mnemonic => :dec, :arg1 => src)
       end
 
-      def pop(dst)
+      def encode_pop(dst)
         encode instruction.with(:mnemonic => :pop, :arg1 => dst)
       end
 
-      def dec(src)
+      def encode_dec(src)
         encode instruction.with(:mnemonic => :dec, :arg1 => src)
       end
 
-      def jnz(label)
+      def encode_jnz(label)
         encode instruction.with(:mnemonic => :jnz, :arg1 => label)
       end
 
-      def label(name)
-        encode_label instruction.with(:mnemonic => :label, :arg1 => name)
+      def encode_label(name)
+        encode_label_label instruction.with(:mnemonic => :label, :arg1 => name)
       end
- 
+      alias execute_label execute_nop
+
       def go
         raise "No #{start_label} label found. Define one with 'label #{start_label}'." if labels[start_label].nil?
 		initialize_execution_registers
-        while not memory[instruction_pointer].nil?
-          execute memory[instruction_pointer]
-          increment_instruction_pointer
-        end
+        execute_instructions
+      end
+
+      def step
+        return no_step if halted?
+        execute memory[instruction_pointer]
+        increment_instruction_pointer
       end
 
     private 
@@ -72,6 +87,19 @@ module RASMATAZ
         @memory = []
         @labels = {}
         @registers = hash_of_all_register_names
+        @halted = false
+      end
+
+      def execute_instructions
+        step while not memory[instruction_pointer].nil? and not halted?
+      end
+
+      def no_step
+        '** HALTED **'
+      end
+
+      def halted?
+        @halted
       end
 
       def initialize_execution_registers
@@ -101,13 +129,14 @@ module RASMATAZ
 
       def execute(instruction)
         puts instruction.inspect
+        send("execute_#{instruction.mnemonic}", instruction)
       end
  
       def encode(instruction)
         # empty - here to help readability of adding instructions for execution.
       end
 
-      def encode_label(instruction)
+      def encode_label_label(instruction)
         @labels[instruction.arg1] = instruction.pointer
       end
 
@@ -143,6 +172,12 @@ module RASMATAZ
     def with(attributes)
       attributes.keys.each { |key| send("#{key}=", attributes[key]) }
       self
+    end
+
+    def args_size
+      return 0 if arg1.nil? and arg2.nil?
+      return 1 if not arg1.nil? and arg2.nil?
+      return 2 if not arg1.nil? and not arg2.nil?
     end
 
   end
