@@ -48,11 +48,19 @@ module RASMATAZ
       end
 
       def encode_push(src)
-        encode instruction.with(:mnemonic => :dec, :arg1 => src)
+        encode instruction.with(:mnemonic => :push, :arg1 => src)
+      end
+
+      def execute_push(instruction)
+        push value_at instruction.arg1
       end
 
       def encode_pop(dst)
         encode instruction.with(:mnemonic => :pop, :arg1 => dst)
+      end
+
+      def execute_pop(instruction)
+        at_put_value(instruction.arg1, pop)
       end
 
       def encode_dec(src)
@@ -143,6 +151,55 @@ module RASMATAZ
       def instruction
         @memory << Instruction.new(self, @memory.size)
         @memory.last
+      end
+
+      def push(value)
+        @stack << value
+      end
+
+      def pop
+        @stack.delete @stack.last
+      end
+
+      def value_at(src)
+        return src if immediate?(src)
+        return register(src) if register?(src)
+        return dereference(src) if reference?(src)
+        raise "don't know how to get value of '#{src}'."
+      end
+
+      def at_put_value(dst, value)
+        return register(dst, value) if register?(dst)
+        return reference(dst, value) if reference?(dst)
+        raise "don't know how to put value '#{value}' into destination '#{dst}'."
+      end
+
+      def immediate?(value)
+        register?(value) == false and value.kind_of?(Array) == false
+      end
+
+      def register?(value)
+        value.kind_of?(Symbol) and @registers[value].nil? == false
+      end
+
+      def register(src)
+        @registers[src]
+      end
+
+      def register(src, value)
+        @registers[src] = value
+      end
+
+      def reference?(value)
+        value.kind_of?(Array)
+      end
+
+      def dereference(value)
+        raise "TODO: handle get reference."
+      end
+
+      def reference(dst, value)
+        raise "TODO: handle set reference."
       end
 
       def hash_of_all_register_names

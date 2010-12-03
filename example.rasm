@@ -2,6 +2,11 @@ require 'rasmataz'
 
    label :start      # program starts execution here.
    nop
+   push 1
+   pop rax
+   
+
+   
 
    load 'part.rasm'  # include another file/library
    nop
