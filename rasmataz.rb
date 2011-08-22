@@ -1,4 +1,4 @@
-require 'rasmataz/dsl.rb'
+require_relative 'rasmataz/dsl.rb'
 
 rasmataz
 

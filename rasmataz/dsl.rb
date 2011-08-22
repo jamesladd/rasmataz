@@ -1,4 +1,4 @@
-require 'rasmataz/machine.rb'
+require_relative 'machine.rb'
 
 private 
 
