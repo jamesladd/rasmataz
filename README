@@ -17,7 +17,7 @@ To play with rasmataz:
 load 
 
    irb
-   > irb_load 'example.rasm', nil
+   > load 'example.rasm', nil
 
 dump registers
 
@@ -34,6 +34,10 @@ dump memory
 dump labels
 
    > labels
+
+step 
+   
+   Will step on instruction at a time, and show result.   
 
 run program
 
